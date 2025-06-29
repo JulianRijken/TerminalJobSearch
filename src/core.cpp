@@ -22,6 +22,6 @@ tjs::Core::Core()
     auto screen = ScreenInteractive::Fullscreen();
 
     // Main renderer
-    Component main_renderer = Renderer(container, [&] { return companies.RenderCompanyTable(); });
+    Component main_renderer = Renderer(container, [&] { return m_Companies.RenderCompanyTable(); });
     screen.Loop(main_renderer);
 }

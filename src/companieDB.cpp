@@ -1,13 +1,15 @@
-#include "companies.hpp"
+#include "companieDB.hpp"
+
+#include <SQLiteCpp/Database.h>
 
 #include <cassert>
 #include <cmath>
 
 using namespace ftxui;
 
-const std::vector<int>& tjs::Companies::GetCategoryWidths() { return m_CategoryWidths; }
+const std::vector<int>& tjs::CompanieDB::GetCategoryWidths() { return m_CategoryWidths; }
 
-ftxui::Element tjs::Companies::RenderCompanyTable()
+ftxui::Element tjs::CompanieDB::RenderCompanyTable()
 {
     std::vector<Element> rows;
 
@@ -29,19 +31,19 @@ ftxui::Element tjs::Companies::RenderCompanyTable()
 
     // Header row
     rows.push_back(row_with_separators({
-                       text(Companies::CategoryToString(Companies::Categories::Name)) | bold |
+                       text(CompanieDB::CategoryToString(CompanieDB::Categories::Name)) | bold |
                            size(WIDTH, EQUAL, m_CategoryWidths[0]),
-                       text(Companies::CategoryToString(Companies::Categories::Product)) | bold |
+                       text(CompanieDB::CategoryToString(CompanieDB::Categories::Product)) | bold |
                            size(WIDTH, EQUAL, m_CategoryWidths[1]),
-                       text(Companies::CategoryToString(Companies::Categories::Status)) | bold |
+                       text(CompanieDB::CategoryToString(CompanieDB::Categories::Status)) | bold |
                            size(WIDTH, EQUAL, m_CategoryWidths[2]),
-                       text(Companies::CategoryToString(Companies::Categories::Language)) | bold |
+                       text(CompanieDB::CategoryToString(CompanieDB::Categories::Language)) | bold |
                            size(WIDTH, EQUAL, m_CategoryWidths[3]),
-                       text(Companies::CategoryToString(Companies::Categories::Engine)) | bold |
+                       text(CompanieDB::CategoryToString(CompanieDB::Categories::Engine)) | bold |
                            size(WIDTH, EQUAL, m_CategoryWidths[4]),
-                       text(Companies::CategoryToString(Companies::Categories::Location)) | bold |
+                       text(CompanieDB::CategoryToString(CompanieDB::Categories::Location)) | bold |
                            size(WIDTH, EQUAL, m_CategoryWidths[5]),
-                       text(Companies::CategoryToString(Companies::Categories::Rating)) | bold |
+                       text(CompanieDB::CategoryToString(CompanieDB::Categories::Rating)) | bold |
                            size(WIDTH, EQUAL, m_CategoryWidths[6]),
                    }) |
                    borderEmpty | bgcolor(Color::RGB(60, 20, 20)));
@@ -69,11 +71,15 @@ ftxui::Element tjs::Companies::RenderCompanyTable()
     return vbox(rows) | flex | frame | border;
 }
 
-tjs::Companies::Companies() { UpdateCategoryWidths(); }
+tjs::CompanieDB::CompanieDB()
+{
+    UpdateCategoryWidths();
+    m_CompaniesDB.exec("CREATE TABLE IF NOT EXISTS companies(id INTEGER, content TEXT)");
+}
 
-const std::vector<tjs::Company>& tjs::Companies::GetLoadedCompanies() { return m_LoadedCompanies; }
+const std::vector<tjs::Company>& tjs::CompanieDB::GetLoadedCompanies() { return m_LoadedCompanies; }
 
-void tjs::Companies::UpdateCategoryWidths()
+void tjs::CompanieDB::UpdateCategoryWidths()
 {
     m_CategoryWidths = std::vector<int>(COL_COUNT);
 

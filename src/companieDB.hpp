@@ -1,6 +1,8 @@
 #ifndef COMPANIES_H
 #define COMPANIES_H
 
+#include <SQLiteCpp/Database.h>
+
 #include <cstdint>
 #include <ftxui/dom/elements.hpp>
 #include <string>
@@ -25,7 +27,7 @@ namespace tjs
         // std::string contactInfo;
     };
 
-    class Companies
+    class CompanieDB
     {
     public:
         enum class Categories : uint8_t
@@ -61,11 +63,15 @@ namespace tjs
         const std::vector<Company>& GetLoadedCompanies();
         ftxui::Element RenderCompanyTable();
 
-        Companies();
+        CompanieDB();
 
     private:
+        static constexpr const char* COMPANIES_DB_PATH = "./companies.db";
+
         static constexpr int COL_COUNT = static_cast<int>(Categories::SIZE);
         static constexpr int MAX_COL_WIDTH = 30;
+
+        SQLite::Database m_CompaniesDB{ COMPANIES_DB_PATH, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE };
 
         // clang-format off
         // NOLINTBEGIN

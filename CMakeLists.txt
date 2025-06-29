@@ -8,14 +8,14 @@ set(TARGET_NAME TerminalJobSearch)
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 set(SOURCE_FILES
-  ${SOURCE_DIR}/core.hpp       ${SOURCE_DIR}/core.cpp
-  ${SOURCE_DIR}/companies.hpp  ${SOURCE_DIR}/companies.cpp
+  ${SOURCE_DIR}/core.hpp        ${SOURCE_DIR}/core.cpp
+  ${SOURCE_DIR}/companieDB.hpp  ${SOURCE_DIR}/companieDB.cpp
+  ${SOURCE_DIR}/custom_table.h  ${SOURCE_DIR}/custom_table.cpp
   ${SOURCE_DIR}/main.cpp
 )
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
-
 )
 
 
@@ -62,7 +62,16 @@ FetchContent_Declare(ftxui
 FetchContent_MakeAvailable(ftxui)
 
 
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/external/SQLiteCpp)
+
+
 target_link_libraries(${TARGET_NAME} PRIVATE
+    # SQLiteCPP
+    SQLiteCpp
+    sqlite3
+    pthread
+    dl
+
     # Chose a submodule
     ftxui::component
     ftxui::dom

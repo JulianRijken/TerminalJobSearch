@@ -13,7 +13,7 @@ namespace tjs
         Core();
 
     private:
-        Companies m_Companies{};
+        CompanieDB m_Companies{};
     };
 
 #endif  // CORE_H
