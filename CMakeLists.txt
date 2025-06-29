@@ -8,12 +8,14 @@ set(TARGET_NAME TerminalJobSearch)
 set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 set(SOURCE_FILES
-    ${SOURCE_DIR}/main.cpp
+  ${SOURCE_DIR}/core.hpp       ${SOURCE_DIR}/core.cpp
+  ${SOURCE_DIR}/companies.hpp  ${SOURCE_DIR}/companies.cpp
+  ${SOURCE_DIR}/main.cpp
 )
 
 add_executable(${TARGET_NAME}
     ${SOURCE_FILES}
-    src/core.hpp src/core.cpp
+
 )
 
 
@@ -58,6 +60,7 @@ FetchContent_Declare(ftxui
   GIT_TAG v6.1.9
 )
 FetchContent_MakeAvailable(ftxui)
+
 
 target_link_libraries(${TARGET_NAME} PRIVATE
     # Chose a submodule
